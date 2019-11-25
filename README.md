@@ -1,6 +1,4 @@
-This code is a pared down version of Mr. Mannequin Tools that demonstrates the following issue:
-
-    https://github.com/Jim-Kroovy/Mr-Mannequins-Tools/issues/8 Mr Mannequins Tools
+This code is a pared down version of Mr. Mannequin Tools that demonstrates [Mr Mannequins Tools Issue #8](https://github.com/Jim-Kroovy/Mr-Mannequins-Tools/issues/8).
 
 The example code in this project is turning file paths into EnumProperty item identifiers.
 
