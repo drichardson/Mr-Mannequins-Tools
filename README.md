@@ -19,7 +19,9 @@ The problem manifested itself by returning a different value in the enum propert
 
 ### Result
 
+```
 Traceback (most recent call last):
   File "C:\Users\doug\AppData\Roaming\Blender Foundation\Blender\2.81\scripts\addons\MrMannequinsTools├á\__init__.py", line 63, in execute
     print("Selected File is {0}".format(MMT.selected_file))
 UnicodeDecodeError: 'utf-8' codec can't decode byte 0xfc in position 2: invalid start byte
+```
