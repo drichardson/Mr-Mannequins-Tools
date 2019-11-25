@@ -67,19 +67,33 @@ from bpy.app.handlers import persistent
 
 #---------- FUNCTIONS --------------------------------------------------------------------------
 
+import base64
+
 # get stashed items from default and custom stashes...
-def Get_Stashed_MMT(MMT_path, armature, type):
+def Get_Stashed_MMT(MMT_path, armature, jktype):
     default_dir = os.path.join(MMT_path, "MMT_Stash")
     items = []
     # gather items from default stash by type...
     for filename in os.listdir(default_dir):
-        if type in filename:
-            if type == 'MESH':
+        if jktype in filename:
+            fullpath = os.path.join(default_dir, filename)
+            identifier = fullpath
+            # str path > bytes path > base64 bytes path > base 64 string path
+            identifier = base64.urlsafe_b64encode(fullpath.encode()).decode()
+            #print("identifier type is {0}".format(type(identifier)))
+            if jktype == 'MESH':
                 if armature.JK_MMT.Rig_type in filename:
                     name_start = (15 if "MANNEQUIN" in filename else 9)
-                    items.append((os.path.join(default_dir, filename), filename[name_start:-6], os.path.join(default_dir, filename)))
+                    items.append((identifier, filename[name_start:-6], fullpath))
             else:
-                items.append((os.path.join(default_dir, filename), filename[9:-6], os.path.join(default_dir, filename)))
+                items.append((identifier, filename[9:-6], fullpath))
+
+    
+    """ print("Get_stashed_MMT (")
+    for item in items:
+        print("  id={0}, name={1}, description={2}".format(item[0], item[1], item[2]))
+    print(")") """
+
     return items
 
 # all the main add-on options...
@@ -110,9 +124,17 @@ class JK_OT_L_Rig(Operator):
     
     def execute(self, context):
         MMT = context.scene.JK_MMT
-        #rig_name = os.path.basename(MMT.L_rigs)[9:-6] - causing utf-8 errors on some systems??
-        rig_name = bpy.path.display_name_from_filepath(MMT.L_rigs)[9:] # does the same thing but should be utf-8 compatible...
+
+        currentItem = MMT.L_rigs
+        print("What is this: {0}".format(currentItem))
+
+        # str path < bytes path < base64 bytes path < base 64 string path
+        rig_name = base64.urlsafe_b64decode(MMT.L_rigs.encode()).decode()
+        #rig_name = base64.urlsafe_b64decode(MMT.L_rigs).decode("utf-8")
+
+        #rig_name = bpy.path.display_name_from_filepath(MMT.L_rigs)[9:] # does the same thing but should be utf-8 compatible...
         print("Rig name is {0}".format(rig_name))
+
         return {'FINISHED'}
     
 # stash interface panel...       
