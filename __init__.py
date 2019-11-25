@@ -90,7 +90,7 @@ def register():
     from bpy.utils import register_class
     for C in JK_MMT_classes:
         register_class(C)
-    bpy.types.Scene.JK_MMT = PointerProperty(type=JK_MMT_Props)
+    bpy.types.Scene.JK_MMT = bpy.props.PointerProperty(type=JK_MMT_Props)
 
 def unregister():
     from bpy.utils import unregister_class
